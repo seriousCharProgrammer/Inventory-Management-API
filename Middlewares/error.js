@@ -1,5 +1,4 @@
 const ErrorResponse = require("../utils/errorResponse");
-
 const errorHandler = function (err, req, res, next) {
   let error = { ...err };
   error.message = err.message;
@@ -15,6 +14,7 @@ const errorHandler = function (err, req, res, next) {
     const message = Object.values(err.errors).map((el) => el.message);
     error = new ErrorResponse(message, 400);
   }
+
   res.status(error.statusCode || 500).json({
     success: false,
     error: error.message || "server error",

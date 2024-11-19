@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
 const ErrorResponse = require("../utils/errorResponse");
-const asyncHandler = require("../middleware/async");
-
+const asyncHandler = require("express-async-handler");
+const dotenv = require("dotenv");
+const User = require("../Models/UserModel");
+dotenv.config({ path: "./config/config.env" });
 exports.protect = asyncHandler(async (req, res, next) => {
   let token;
   if (
@@ -16,16 +17,18 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
   //Make sure token exists
   if (!token) {
-    return next(new ErrorResponse("not authorized to acces this route", 401));
+    return next(new ErrorResponse("not authorized to access this routes", 401));
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(decoded);
+    const decoded = jwt.verify(token, process.env.JWT_KEY);
+
     req.user = await User.findById(decoded.id);
     next();
   } catch (err) {
-    return next(new ErrorResponse("not authorized to acces this route", 401));
+    return next(
+      new ErrorResponse("not authorized to accesssss this route", 401)
+    );
   }
 });
 //grant acces to specific roles
