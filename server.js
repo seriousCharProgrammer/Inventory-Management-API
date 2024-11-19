@@ -31,7 +31,7 @@ app.use("/api/v1/auth", authrouter);
 app.use("/api/v1/low-stock", lowStockRouter);
 app.use("/api/v1/inventory-status", invStatusroute);
 app.use(errorHandler);
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT || 5000, () => {
   console.log(`server listenig on port:${PORT}`);
 });
 
