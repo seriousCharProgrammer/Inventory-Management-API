@@ -1,8 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../Models/UserModel");
 const ErrorResponse = require("../utils/errorResponse");
-const dotenv = require("dotenv");
-dotenv.config({ path: "./config/config.env" });
 
 exports.register = asyncHandler(async (req, res, next) => {
   const user = await User.create(req.body);
@@ -33,7 +31,7 @@ exports.logout = asyncHandler(async (req, res, next) => {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
   });
-  const user = await User.findById(req.user.id);
+  //const user = await User.findById(req.user.id);
 
   res.status(200).json({
     success: true,
@@ -45,7 +43,7 @@ const sendTokenResponse = function (user, statuscode, res) {
   const token = user.getSignedJwtToken();
 
   const options = {
-    expires: new Date(Date.now() + process.env.COOKIE_EXP * 60 * 1000),
+    expires: new Date(Date.now() + 40 * 60 * 1000),
     httpOnly: true,
   };
   res.status(statuscode).cookie("token", token, options).json({
